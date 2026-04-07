@@ -7,9 +7,9 @@
     "dev": "vite dev",
     "build": "vite build",
     "preview": "vite preview",
-    "prepare": "lefthook install",
     "check": "ultracite check",
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
+    "typecheck": "tsc --noEmit",
     "fix": "ultracite fix"
   },
   "dependencies": {
@@ -21,6 +21,7 @@
     "bits-ui": "^2.16.5",
     "clsx": "^2.1.1",
     "cross-env": "^10.1.0",
+    "dexie": "^4.4.2",
     "formsnap": "^2.0.1",
     "mode-watcher": "^1.1.0",
     "tailwind-merge": "^3.5.0",
