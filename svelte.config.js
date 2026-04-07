@@ -14,19 +14,17 @@ const config = {
       const isExternalLibrary = pathSegments.includes("node_modules");
 
       return isExternalLibrary ? undefined : true;
-    },
+    }
   },
-  kit: {
-    adapter: adapter(),
-  },
+  kit: { adapter: adapter() },
   preprocess: [
     vitePreprocess(),
     UnoCSS({
       combine: prod,
       configOrPath: "./uno.config.ts",
-      exclude: ["node_modules/*"],
-    }),
-  ],
+      exclude: ["node_modules/*"]
+    })
+  ]
 };
 
 export default config;
