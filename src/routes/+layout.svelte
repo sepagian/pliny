@@ -33,7 +33,7 @@
 
 <ModeWatcher />
 <TooltipProvider>
-  <main class="max-w-2xl mx-auto h-screen p-4 flex flex-col gap-y-5">
+  <main class="max-w-2xl mx-auto h-screen p-4 flex flex-col gap-y-4">
     <Header />
     {@render children()}
     <NavBar />

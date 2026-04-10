@@ -15,7 +15,9 @@
   });
 </script>
 
-<section class="grid grid-cols-6"><Balance /></section>
+<section class="grid grid-cols-6">
+  <Balance />
+</section>
 <Usage />
 <Action />
 <LogList />
