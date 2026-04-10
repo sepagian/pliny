@@ -24,5 +24,7 @@
 
 <div class="grid col-span-5 content-center gap-0">
   <h2 class="text-4xl font-bold tabular-nums">{currentBalance ?? "--"} Kwh</h2>
-  <p class="text-sm">estimated remaining balance from usage</p>
+  <p class="text-sm text-muted-foreground">
+    estimated remaining balance from usage
+  </p>
 </div>

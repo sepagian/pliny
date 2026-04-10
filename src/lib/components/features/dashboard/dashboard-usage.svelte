@@ -1,11 +1,4 @@
 <script lang="ts">
-  import {
-    Card,
-    CardDescription,
-    CardHeader,
-    CardTitle,
-  } from "$lib/components/ui/card";
-  import { Item, ItemContent } from "$lib/components/ui/item";
   import { applianceStore } from "$lib/stores/appliance.svelte";
   import { useCombinedEntries } from "$lib/stores/logs.svelte";
   import type { Appliance, Entry } from "$lib/types";
@@ -62,22 +55,14 @@
   ]);
 </script>
 
-<Item class="p-0">
-  <ItemContent class="gap-2">
-    <div class="grid grid-cols-3 gap-x-3">
-      {#each usage as { description, title, footer }}
-        <Card>
-          <CardHeader>
-            <CardDescription class="uppercase text-xs truncate"
-              >{description}</CardDescription
-            >
-            <CardTitle class="text-4xl tabular-nums font-semibold"
-              >{title}</CardTitle
-            >
-            <CardDescription class="text-xs">{footer}</CardDescription>
-          </CardHeader>
-        </Card>
-      {/each}
+<section class="grid grid-cols-3 gap-x-3">
+  {#each usage as { description, title, footer }}
+    <div class="card-secondary">
+      <h2 class="uppercase text-xs truncate text-accent-foreground">
+        {description}
+      </h2>
+      <h1 class="text-4xl tabular-nums font-semibold">{title}</h1>
+      <p class="text-xs text-muted-foreground">{footer}</p>
     </div>
-  </ItemContent>
-</Item>
+  {/each}
+</section>
