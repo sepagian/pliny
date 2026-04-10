@@ -13,6 +13,17 @@ import { presetLightDark } from "unocss-preset-light-dark";
 import { presetShadcn } from "unocss-preset-shadcn";
 
 export default defineConfig({
+  shortcuts: {
+    "card-primary":
+      "p-4 rounded-lg bg-primary grid gap-1 hover:bg-primary/90 text-primary-foreground",
+    "card-secondary":
+      "p-4 rounded-lg bg-secondary grid gap-1 hover:bg-secondary/90 text-secondary-foreground",
+    "btn-primary":
+      "bg-primary text-primary-foreground hover:bg-primary/95 inline-flex h-12 items-center justify-center px-5.25 text-[15px] font-semibold active:scale-[0.98] active:transition-all rounded-lg w-full gap-2",
+    "btn-secondary":
+      "bg-secondary text-secondary-foreground hover:bg-primary/95 inline-flex h-12 items-center justify-center px-5.25 text-[15px] font-semibold active:scale-[0.98] active:transition-all rounded-lg w-full gap-2",
+  },
+  safelist: ["p-*", "m-*", "gap-*", "size-*"],
   presets: [
     presetWind4({
       preflights: {
