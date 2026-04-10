@@ -132,7 +132,7 @@
       case "session":
         return `${entry.duration} jam`;
       case "meter":
-        return "Manual";
+        return null;
       default:
         return null;
     }
@@ -150,7 +150,9 @@
   });
 </script>
 
-<Item variant="muted">
+<div
+  class="flex gap-4 items-center bg-muted/50 rounded-xl p-4 hover:bg-muted/60"
+>
   <div class="dot" style="background: {color};"></div>
   <ItemContent class="flex flex-row justify-between">
     <div class="flex flex-col gap-1">
@@ -183,7 +185,14 @@
         description={formConfig[entry.type ]?.description ?? ""}
       >
         {#snippet trigger()}
-          <Button variant="secondary" size="sm"> <Pencil size="12" /> </Button>
+          <Tooltip>
+            <TooltipTrigger>
+              <Button variant="secondary" size="sm">
+                <Pencil size="12" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>Edit</TooltipContent>
+          </Tooltip>
         {/snippet}
         {#snippet content()}
           <div class="mb-6">
@@ -207,7 +216,7 @@
       <TooltipContent>Delete</TooltipContent>
     </Tooltip>
   </ItemActions>
-</Item>
+</div>
 
 <style>
   .dot {

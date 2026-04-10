@@ -1,11 +1,5 @@
 <script lang="ts">
   import EntryItem from "$lib/components/features/log/entry-item.svelte";
-  import {
-    Item,
-    ItemContent,
-    ItemDescription,
-    ItemTitle,
-  } from "$lib/components/ui/item";
   import { applianceStore } from "$lib/stores/appliance.svelte";
   import { useCombinedEntries } from "$lib/stores/logs.svelte";
   import type { Appliance } from "$lib/types";
@@ -30,29 +24,25 @@
   );
 </script>
 
-<Item class="p-0 mb-10">
-  <ItemContent class="gap-2">
-    <div>
-      <ItemTitle class="uppercase">Log Aktivitas</ItemTitle>
-      <ItemDescription>
-        Pantau semua aktivitas listrik, termasuk top up, meter, dan pemakaian.
-      </ItemDescription>
-    </div>
+<section class="grid gap-2 mb-10">
+  <div>
+    <h2 class="uppercase text-sm">Log Aktivitas</h2>
+    <p class="text-sm text-muted-foreground">
+      Pantau semua aktivitas listrik, termasuk top up, meter, dan pemakaian.
+    </p>
+  </div>
 
-    {#if enrichedLogs.length}
-      <div class="flex flex-col gap-2">
-        {#each enrichedLogs as entry (entry.id)}
-          <EntryItem {entry} />
-        {/each}
-      </div>
-    {:else}
-      <Item variant="muted">
-        <ItemContent>
-          <p class="text-sm text-muted-foreground text-center py-4">
-            Belum ada entri.
-          </p>
-        </ItemContent>
-      </Item>
-    {/if}
-  </ItemContent>
-</Item>
+  {#if enrichedLogs.length}
+    <div class="flex flex-col gap-2">
+      {#each enrichedLogs as entry (entry.id)}
+        <EntryItem {entry} />
+      {/each}
+    </div>
+  {:else}
+    <div class="bg-secondary rounded-lg">
+      <p class="text-sm text-secondary-foreground text-center py-4">
+        Belum ada entri.
+      </p>
+    </div>
+  {/if}
+</section>

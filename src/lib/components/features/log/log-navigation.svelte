@@ -46,7 +46,7 @@
 </script>
 
 <UnderlineTabs value="top-up" class="grid gap-4">
-  <div class="px-4">
+  <div class="">
     <UnderlineTabsList class="grid grid-cols-3 text-center">
       {#each tabs as { value, label }}
         <UnderlineTabsTrigger {value}>{label}</UnderlineTabsTrigger>
@@ -56,7 +56,7 @@
   {#each tabs as { value, component }}
     <UnderlineTabsContent {value}>
       {@const Component = component}
-      <Component {onSuccess} />
+      <div class="mb-6"><Component {onSuccess} /></div>
     </UnderlineTabsContent>
   {/each}
 </UnderlineTabs>
