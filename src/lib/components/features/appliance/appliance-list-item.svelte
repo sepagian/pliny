@@ -61,7 +61,9 @@
           bind:open
         >
           {#snippet trigger()}
-            <Button variant="secondary"> <Pencil size="16" /> </Button>
+            <Button variant="secondary" size="sm">
+              <Pencil size="12" />
+            </Button>
           {/snippet}
           {#snippet content()}
             <ApplianceForm id={appliance.id} onSuccess={() => (open = false)} />
@@ -73,8 +75,8 @@
     <!-- Delete Button -->
     <Tooltip>
       <TooltipTrigger>
-        <Button variant="secondary" onclick={handleDelete}>
-          <Trash size="16" />
+        <Button variant="secondary" onclick={handleDelete} size="sm">
+          <Trash size="12" />
         </Button>
       </TooltipTrigger>
       <TooltipContent>Delete</TooltipContent>

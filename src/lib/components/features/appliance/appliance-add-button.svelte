@@ -4,11 +4,6 @@
   import DrawerWrapper from "$lib/components/features/layout/layout-drawer.svelte";
   import { Button } from "$lib/components/ui/button";
 
-  interface Props {
-    buttonClass?: string;
-  }
-
-  let { buttonClass }: Props = $props();
   let open = $state(false);
 </script>
 
@@ -18,9 +13,7 @@
   description="Tambahkan perangkat yang ingin kamu pantau penggunaan listriknya."
 >
   {#snippet trigger()}
-    <Button class={buttonClass} size="sm">
-      <Plus size="16" />Tambah Perangkat
-    </Button>
+    <button class="btn-primary"><Plus size="16" />Tambah Perangkat</button>
   {/snippet}
   {#snippet content()}
     <ApplianceForm onSuccess={() => (open = false)} />
