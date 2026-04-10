@@ -1,6 +1,21 @@
 import type { EnrichedEntry, Entry } from "$lib/types";
 import { fmt } from "./format";
 
+function generateDateRange(startDate: string): string[] {
+  const dates: string[] = [];
+  const start = new Date(startDate);
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  start.setHours(0, 0, 0, 0);
+
+  while (start <= today) {
+    dates.push(start.toISOString().split("T")[0]);
+    start.setDate(start.getDate() + 1);
+  }
+
+  return dates;
+}
+
 export function generateDailyEntries(
   dates: string[],
   dailyKwh: number
@@ -32,13 +47,16 @@ export function computeEnrichedEntries(
   entries: Entry[],
   alwaysOnKwhPerDay: number
 ): EnrichedEntry[] {
-  const uniqueDates = [
-    ...new Set(entries.map((e) => e.date).filter((d): d is string => !!d)),
-  ];
+  const firstEntryDate = entries
+    .map((e) => e.date)
+    .filter((d): d is string => !!d)
+    .sort((a, b) => new Date(a).getTime() - new Date(b).getTime())[0];
+
+  const dateRange = firstEntryDate ? generateDateRange(firstEntryDate) : [];
 
   const dailyEntries =
-    alwaysOnKwhPerDay > 0
-      ? generateDailyEntries(uniqueDates, alwaysOnKwhPerDay)
+    alwaysOnKwhPerDay > 0 && dateRange.length > 0
+      ? generateDailyEntries(dateRange, alwaysOnKwhPerDay)
       : [];
 
   const allEntries = [...entries, ...dailyEntries].sort((a, b) =>
