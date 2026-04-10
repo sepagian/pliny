@@ -87,7 +87,7 @@
   });
 </script>
 
-<form method="POST" use:enhance class="grid gap-8 mb-4">
+<form method="POST" use:enhance class="grid gap-8 mb-6">
   <div class="grid gap-2 px-4">
     <FormField {form} name="name" class="grid gap-1">
       <FormControl>
