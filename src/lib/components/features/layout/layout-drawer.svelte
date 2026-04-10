@@ -1,12 +1,5 @@
 <script lang="ts">
-  import {
-    Drawer,
-    DrawerContent,
-    DrawerDescription,
-    DrawerHeader,
-    DrawerTitle,
-    DrawerTrigger,
-  } from "$lib/components/ui/drawer";
+  import { Drawer } from "vaul-svelte";
 
   let {
     trigger,
@@ -18,18 +11,28 @@
   } = $props();
 </script>
 
-<Drawer bind:open>
-  <DrawerTrigger {...triggerProps} data-props="drawer-trigger">
+<Drawer.Root bind:open shouldScaleBackground>
+  <Drawer.Trigger {...triggerProps} data-props="drawer-trigger">
     {@render trigger()}
-  </DrawerTrigger>
+  </Drawer.Trigger>
 
-  <DrawerContent>
-    <div class="mx-auto w-full max-w-sm">
-      <DrawerHeader>
-        <DrawerTitle>{title}</DrawerTitle>
-        <DrawerDescription>{description}</DrawerDescription>
-      </DrawerHeader>
-      {@render content?.()}
-    </div>
-  </DrawerContent>
-</Drawer>
+  <Drawer.Portal>
+    <Drawer.Overlay class="fixed inset-0 bg-black/80" />
+    <Drawer.Content
+      class="fixed bottom-0 left-0 right-0 mt-24 flex h-fit flex-col rounded-t-xl bg-background"
+    >
+      <div class="mx-auto w-full max-w-sm pt-4 flex flex-col gap-2">
+        <div
+          class="mx-auto mb-4 h-1.5 w-12 flex-shrink-0 rounded-full bg-zinc-300"
+        ></div>
+        <div class="flex flex-col gap-0 px-4">
+          <Drawer.Title class="font-medium">{title}</Drawer.Title>
+          <Drawer.Description class="text-sm text-muted-foreground"
+            >{description}</Drawer.Description
+          >
+        </div>
+        {@render content?.()}
+      </div>
+    </Drawer.Content>
+  </Drawer.Portal>
+</Drawer.Root>
