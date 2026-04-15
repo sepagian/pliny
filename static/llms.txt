@@ -1,0 +1,51 @@
+# llms.txt - AI Crawler Indexing
+# Specification: https://llmstxt.fyi/
+
+Welcome to Pliny
+================
+
+Pliny is a prepaid electricity usage tracker for Indonesian households.
+Track your electricity credit usage, monitor appliance wattage,
+and estimate remaining balance.
+
+Target Audience:
+- Indonesian households using prepaid (token) electricity
+- Users who want to track and optimize their electricity consumption
+
+Key Features:
+- Log electricity top-ups (token purchases with kWh amount)
+- Record meter readings (meter number input)
+- Track per-appliance electricity consumption (wattage & hours)
+- Monitor daily usage patterns
+- Calculate estimated balance remaining
+- Dark mode support
+
+Technical Stack:
+- Svelte 5 with runes
+- SvelteKit with Cloudflare Pages adapter
+- TypeScript
+- UnoCSS (atomic CSS)
+- bits-ui components (accessibility primitives)
+- Zod for validation
+
+Repository:
+https://github.com/sepagian/pliny
+
+Demo:
+https://pliny.sepagian.xyz
+
+---
+SECTIONS
+
+/home - Dasbor - Main dashboard showing current balance and usage statistics
+/appliance - Perangkat - Manage and add electronic devices to track
+
+---
+API REFERENCE
+
+No public API. Data is stored locally in the browser (localStorage).
+
+---
+CONTENT
+
+All content is in Indonesian (Bahasa Indonesia).
