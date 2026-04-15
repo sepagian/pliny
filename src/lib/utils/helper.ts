@@ -1,15 +1,22 @@
 import type { EnrichedEntry, Entry } from "$lib/types";
 import { fmt } from "./format";
 
+function formatDateLocal(date: Date): string {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
+
 function generateDateRange(startDate: string): string[] {
   const dates: string[] = [];
   const start = new Date(startDate);
   const today = new Date();
-  today.setHours(0, 0, 0, 0);
+  today.setDate(today.getDate() - 1);
   start.setHours(0, 0, 0, 0);
 
   while (start <= today) {
-    dates.push(start.toISOString().split("T")[0]);
+    dates.push(formatDateLocal(start));
     start.setDate(start.getDate() + 1);
   }
 
@@ -78,7 +85,9 @@ export function computeEnrichedEntries(
     });
   }
 
-  return enriched.sort((a, b) => b.timestamp.localeCompare(a.timestamp));
+  return enriched.sort(
+    (a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
+  );
 }
 
 export function computeCurrentBalance(
