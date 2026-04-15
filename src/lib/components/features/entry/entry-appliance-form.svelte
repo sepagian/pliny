@@ -5,12 +5,11 @@
     type SuperValidated,
     superForm,
   } from "sveltekit-superforms";
+  import { Drawer } from "vaul-svelte";
   import { zod4Client } from "sveltekit-superforms/adapters";
   import { invalidateAll } from "$app/navigation";
   import { addAppliance, updateAppliance } from "$lib/actions/appliance";
-  import { Checkbox, Label } from "bits-ui";
-  import { DrawerClose } from "$lib/components/ui/drawer";
-  import { FormButton } from "$lib/components/ui/form";
+  import { Label, Button } from "bits-ui";
   import { Field, Control, Description, FieldErrors, Fieldset } from "formsnap";
   import { useAppliances } from "$lib/stores/appliance.svelte";
   import { type ApplianceSchema, applianceSchema } from "$lib/utils/schema";
@@ -57,10 +56,6 @@
     id ? appliancesStore.find((a) => a.id === id) : undefined
   );
 
-  function handleCheck(e: boolean) {
-    sessionBased = e;
-  }
-
   function handleSuccess() {
     invalidateAll();
     onSuccess?.();
@@ -83,7 +78,7 @@
 <form method="POST" use:enhance class="grid gap-8 mb-6">
   <div class="grid gap-4 px-4">
     <Field {form} name="name">
-      <div class="grid gap-y-2">
+      <div class="grid gap-y-1">
         <Control>
           {#snippet children({props})}
             <div class="grid gap-1">
@@ -108,7 +103,7 @@
     </Field>
 
     <Field {form} name="watt">
-      <div class="grid gap-y-2">
+      <div class="grid gap-y-1">
         <Control>
           {#snippet children({props})}
             <div class="grid gap-1">
@@ -135,7 +130,7 @@
 
     {#if !sessionBased}
       <Field {form} name="dailyHours">
-        <div class="grid gap-y-2">
+        <div class="grid gap-y-1">
           <Control>
             {#snippet children({props})}
               <div class="grid gap-1">
@@ -180,9 +175,11 @@
   </div>
 
   <div class="grid gap-2 px-4">
-    <FormButton class="flex-1 font-bold btn-primary h-10">Simpan</FormButton>
-    <DrawerClose class="flex-1 font-normal btn-secondary h-10"
-      >Batalkan</DrawerClose
+    <Button.Root type="submit" class="flex-1 font-bold btn-primary h-10"
+      >Simpan</Button.Root
+    >
+    <Drawer.Close class="flex-1 font-normal btn-secondary h-10"
+      >Batalkan</Drawer.Close
     >
   </div>
 </form>

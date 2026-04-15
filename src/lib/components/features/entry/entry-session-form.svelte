@@ -8,20 +8,9 @@
   import { zod4Client } from "sveltekit-superforms/adapters";
   import { invalidateAll } from "$app/navigation";
   import { addSession, updateSession } from "$lib/actions/session";
-  import { DrawerClose } from "$lib/components/ui/drawer";
-  import {
-    FormButton,
-    FormControl,
-    FormDescription,
-    FormField,
-    FormFieldErrors,
-    FormLabel,
-  } from "$lib/components/ui/form";
-  import { Input } from "$lib/components/ui/input";
-  import {
-    NativeSelect,
-    NativeSelectOption,
-  } from "$lib/components/ui/native-select";
+  import { Drawer } from "vaul-svelte";
+  import { Label, Button, Select } from "bits-ui";
+  import { Field, Control, Description, FieldErrors } from "formsnap";
   import { applianceStore } from "$lib/stores/appliance.svelte";
   import { useSessionEntries } from "$lib/stores/logs.svelte";
   import type { Appliance } from "$lib/types";
@@ -107,63 +96,78 @@
       kwh: (a.watt as number) / 1000,
     }))
   );
+
+  const selectedAppliance = $derived(
+    applianceList.find((a) => a.value === $formData.appliance)
+  );
 </script>
 
 <form method="POST" use:enhance class="grid gap-8">
   <div class="grid gap-2 px-4 h-50">
-    <FormField {form} name="appliance" class="flex flex-col gap-1">
-      <FormControl>
-        {#snippet children({props})}
-          <div class="grid gap-2">
-            <FormLabel>Perangkat</FormLabel>
-            <NativeSelect
-              bind:value={$formData.appliance}
-              class="w-full"
-              style="height:2.5rem"
-              aria-label="Pilih perangkat"
-              placeholder="Pilih perangkat"
-            >
-              {#each applianceList as item (item.value)}
-                <NativeSelectOption {...props} value={item.value} class="h-10"
-                  >{item.label}</NativeSelectOption
-                >
-              {/each}
-            </NativeSelect>
-          </div>
-        {/snippet}
-      </FormControl>
-      <FormDescription class="text-xs"
-        >Pilih atau isi perangkat yang digunakan (misalnya AC).</FormDescription
-      >
-      <FormFieldErrors />
-    </FormField>
+    <Field {form} name="appliance">
+      <div class="flex flex-col gap-1">
+        <Control>
+          {#snippet children({props})}
+            <div class="grid gap-1">
+              <Label.Root>Perangkat</Label.Root>
+              <Select.Root type="single" bind:value={$formData.appliance}>
+                <Select.Trigger {...props} class="input text-sm text-left">
+                  {selectedAppliance?.label ?? "Pilih perangkat"}
+                </Select.Trigger>
+                <Select.Content sideOffset={6} class="select-content">
+                  {#each applianceList as item}
+                    <Select.Item value={item.value} class="select-item">
+                      <div class="flex justify-between gap-2 items-center">
+                        <span>{item.label}</span>
+                        <span class="text-sm text-gray-500">
+                          {item.watt}
+                          Watt
+                        </span>
+                      </div>
+                    </Select.Item>
+                  {/each}
+                </Select.Content>
+              </Select.Root>
+            </div>
+          {/snippet}
+        </Control>
+        <Description class="text-xs"
+          >Pilih atau isi perangkat yang digunakan (misalnya AC).</Description
+        >
+        <FieldErrors />
+      </div>
+    </Field>
 
-    <FormField {form} name="duration" class="grid gap-1">
-      <FormControl>
-        {#snippet children({props})}
-          <div class="grid gap-2">
-            <FormLabel>Durasi (jam)</FormLabel>
-            <Input
-              class="h-10"
-              type="number"
-              inputmode="numeric"
-              {...props}
-              bind:value={$formData.duration}
-            />
-          </div>
-        {/snippet}
-      </FormControl>
-      <FormDescription class="text-xs">
-        Berapa lama perangkat digunakan.
-      </FormDescription>
-      <FormFieldErrors />
-    </FormField>
+    <Field {form} name="duration">
+      <div class="flex flex-col gap-1">
+        <Control>
+          {#snippet children({props})}
+            <div class="grid gap-1">
+              <Label.Root>Durasi (jam)</Label.Root>
+              <input
+                class="input"
+                type="number"
+                inputmode="numeric"
+                {...props}
+                bind:value={$formData.duration}
+              >
+            </div>
+          {/snippet}
+        </Control>
+        <Description class="text-xs">
+          Berapa lama perangkat digunakan.
+        </Description>
+        <FieldErrors />
+      </div>
+    </Field>
   </div>
 
   <div class="grid gap-2 px-4">
-    <FormButton class="flex-1 font-bold btn-primary h-10">Simpan</FormButton>
-    <DrawerClose class="flex-1 font-normal btn-secondary h-10"
-      >Batalkan</DrawerClose
+    <Button.Root type="submit" class="flex-1 font-bold btn-primary h-10"
+      >Simpan</Button.Root
+    >
+    <Drawer.Close class="flex-1 font-normal btn-secondary h-10"
+      >Batalkan</Drawer.Close
     >
   </div>
 </form>
