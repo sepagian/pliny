@@ -3,23 +3,12 @@
   import { deleteAppliance } from "$lib/actions/appliance";
   import ApplianceForm from "$lib/components/features/entry/entry-appliance-form.svelte";
   import DrawerWrapper from "$lib/components/features/layout/layout-drawer.svelte";
-  import { Button } from "$lib/components/ui/button";
+  import TooltipWrapper from "$lib/components/features/layout/layout-tooltip.svelte";
+  import { Button } from "bits-ui";
   import {
     ConfirmDeleteDialog,
     confirmDelete,
-  } from "$lib/components/ui/confirm-delete-dialog";
-  import {
-    Item,
-    ItemActions,
-    ItemContent,
-    ItemDescription,
-    ItemTitle,
-  } from "$lib/components/ui/item";
-  import {
-    Tooltip,
-    TooltipContent,
-    TooltipTrigger,
-  } from "$lib/components/ui/tooltip";
+  } from "$lib/components/features/layout";
   import type { Appliance } from "$lib/types";
 
   let { appliance }: { appliance: Appliance } = $props();
@@ -36,50 +25,57 @@
   }
 </script>
 
-<Item variant="muted">
-  <ItemContent>
-    <ItemTitle> {appliance.name} </ItemTitle>
+<div
+  class="flex gap-4 items-center bg-secondary rounded-xl p-4 hover:bg-secondary/60"
+>
+  <div class="flex flex-col w-full">
+    <h2 class="text-sm">{appliance.name} </h2>
     <div class="flex gap-2">
-      <ItemDescription class="text-xs">{appliance.watt} Watt</ItemDescription>
+      <p class="text-xs text-muted-foreground">{appliance.watt} Watt</p>
       {#if appliance.dailyHours}
         <span>·</span>
-        <ItemDescription class="text-xs">
+        <p class="text-muted-foreground text-xs">
           {appliance.dailyHours}
           jam/hari
-        </ItemDescription>
+        </p>
       {/if}
     </div>
-  </ItemContent>
-  <ItemActions>
+  </div>
+  <div class="flex gap-2">
     <ConfirmDeleteDialog />
     <!-- Edit Button -->
-    <Tooltip>
-      <TooltipTrigger>
-        <DrawerWrapper
-          title="Edit Perangkat"
-          description="Edit perangkat"
-          bind:open
-        >
+    <DrawerWrapper
+      title="Edit Perangkat"
+      description="Perbarui informasi perangkat."
+      bind:open
+    >
+      {#snippet trigger()}
+        <TooltipWrapper>
           {#snippet trigger()}
-            <Button variant="secondary" size="sm">
-              <Pencil size="12" />
-            </Button>
+            <Button.Root
+              class="btn-secondary bg-stone-700 text-stone-100 hover:(bg-stone-800 text-stone-100) p-3"
+            >
+              <Pencil size="16" />
+            </Button.Root>
           {/snippet}
-          {#snippet content()}
-            <ApplianceForm id={appliance.id} onSuccess={() => (open = false)} />
-          {/snippet}
-        </DrawerWrapper>
-      </TooltipTrigger>
-      <TooltipContent>Edit</TooltipContent>
-    </Tooltip>
+          Edit
+        </TooltipWrapper>
+      {/snippet}
+      {#snippet content()}
+        <ApplianceForm id={appliance.id} onSuccess={() => (open = false)} />
+      {/snippet}
+    </DrawerWrapper>
     <!-- Delete Button -->
-    <Tooltip>
-      <TooltipTrigger>
-        <Button variant="secondary" onclick={handleDelete} size="sm">
-          <Trash size="12" />
-        </Button>
-      </TooltipTrigger>
-      <TooltipContent>Delete</TooltipContent>
-    </Tooltip>
-  </ItemActions>
-</Item>
+    <TooltipWrapper>
+      {#snippet trigger()}
+        <Button.Root
+          class="btn-secondary bg-red-700 text-red-100 hover:(bg-red-800 text-red-100) p-3"
+          onclick={handleDelete}
+        >
+          <Trash size="16" />
+        </Button.Root>
+      {/snippet}
+      Delete
+    </TooltipWrapper>
+  </div>
+</div>

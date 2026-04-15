@@ -2,14 +2,6 @@
   import { Unplug } from "@lucide/svelte";
   import AddApplianceButton from "$lib/components/features/appliance/appliance-add-button.svelte";
   import ApplianceListItem from "$lib/components/features/appliance/appliance-list-item.svelte";
-  import {
-    Empty,
-    EmptyContent,
-    EmptyDescription,
-    EmptyHeader,
-    EmptyMedia,
-    EmptyTitle,
-  } from "$lib/components/ui/empty";
   import { applianceStore } from "$lib/stores/appliance.svelte";
 
   const appliances = $derived(applianceStore.appliances);
@@ -35,18 +27,26 @@
       <AddApplianceButton />
     </div>
   {:else}
-    <Empty>
-      <EmptyHeader>
-        <EmptyMedia class="bg-secondary size-12 rounded-full">
+    <div
+      class="gap-4 rounded-xl border border-secondary p-6 flex w-full min-w-0 flex-1 flex-col items-center justify-center text-center text-balance bg-muted"
+    >
+      <div class="flex flex-col flex-1 justify-center items-center gap-2">
+        <div
+          class="bg-muted-foreground text-muted flex size-12 shrink-0 items-center justify-center rounded-full [&_svg:not([class*='size-'])]:size-6"
+        >
           <Unplug size="24" />
-        </EmptyMedia>
-        <EmptyTitle>Belum ada perangkat</EmptyTitle>
-        <EmptyDescription>
+        </div>
+        <h2 class="text-sm">Belum ada perangkat</h2>
+        <p class="text-sm text-muted-foreground w-sm">
           Tambahkan perangkat yang ingin kamu pantau agar bisa mulai mencatat
           pemakaian listrik
-        </EmptyDescription>
-      </EmptyHeader>
-      <EmptyContent> <AddApplianceButton /> </EmptyContent>
-    </Empty>
+        </p>
+      </div>
+      <div
+        class="gap-2.5 text-sm flex w-full max-w-sm min-w-0 flex-col items-center text-balance"
+      >
+        <AddApplianceButton />
+      </div>
+    </div>
   {/if}
 </div>
