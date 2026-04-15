@@ -38,8 +38,8 @@
     validators: zod4Client(logTopUpSchema),
     onUpdate({ form }) {
       if (form.valid) {
-        const date = new Date().toISOString().split("T")[0];
-        const timestamp = new Date().toISOString();
+        const date = $formData.date;
+        const timestamp = $formData.date;
         const data = {
           type: "topup" as const,
           amount: form.data.amount,
@@ -79,8 +79,8 @@
 </script>
 
 <form method="POST" use:enhance class="grid gap-8">
-  <div class="grid gap-2 px-4">
-    <FormField {form} name="date" class="grid gap-1">
+  <div class="grid gap-2 px-4 h-50">
+    <FormField {form} name="date" class="flex flex-col gap-1">
       <FormControl>
         {#snippet children({props})}
           <div class="grid gap-2">
@@ -122,7 +122,9 @@
     </FormField>
   </div>
   <div class="grid gap-2 px-4">
-    <FormButton class="flex-1">Simpan</FormButton>
-    <DrawerClose class="flex-1">Batalkan</DrawerClose>
+    <FormButton class="flex-1 font-bold btn-primary h-10">Simpan</FormButton>
+    <DrawerClose class="flex-1 font-normal btn-secondary h-10"
+      >Batalkan</DrawerClose
+    >
   </div>
 </form>

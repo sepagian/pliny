@@ -8,17 +8,10 @@
   import { zod4Client } from "sveltekit-superforms/adapters";
   import { invalidateAll } from "$app/navigation";
   import { addAppliance, updateAppliance } from "$lib/actions/appliance";
-  import { Checkbox } from "$lib/components/ui/checkbox";
+  import { Checkbox, Label } from "bits-ui";
   import { DrawerClose } from "$lib/components/ui/drawer";
-  import {
-    FormButton,
-    FormControl,
-    FormDescription,
-    FormField,
-    FormFieldErrors,
-    FormLabel,
-  } from "$lib/components/ui/form";
-  import { Input } from "$lib/components/ui/input";
+  import { FormButton } from "$lib/components/ui/form";
+  import { Field, Control, Description, FieldErrors, Fieldset } from "formsnap";
   import { useAppliances } from "$lib/stores/appliance.svelte";
   import { type ApplianceSchema, applianceSchema } from "$lib/utils/schema";
 
@@ -57,7 +50,7 @@
     },
   });
 
-  const { form: formData, enhance } = form;
+  const { form: formData, enhance, errors } = form;
 
   const appliancesStore = useAppliances();
   const appliance = $derived(
@@ -88,89 +81,108 @@
 </script>
 
 <form method="POST" use:enhance class="grid gap-8 mb-6">
-  <div class="grid gap-2 px-4">
-    <FormField {form} name="name" class="grid gap-1">
-      <FormControl>
-        {#snippet children({props})}
-          <div class="grid gap-2">
-            <FormLabel>Nama Perangkat</FormLabel>
-            <Input
-              class="h-10"
-              type="text"
-              {...props}
-              bind:value={$formData.name}
-            />
-          </div>
-        {/snippet}
-      </FormControl>
-      <FormDescription class="text-xs">
-        Beri nama perangkat agar mudah dikenali (misalnya AC kamar atau kipas).
-      </FormDescription>
-      <FormFieldErrors />
-    </FormField>
-
-    <FormField {form} name="watt" class="grid gap-1">
-      <FormControl>
-        {#snippet children({props})}
-          <div class="grid gap-2">
-            <FormLabel>Daya (Watt)</FormLabel>
-            <Input
-              class="h-10"
-              type="number"
-              inputmode="decimal"
-              {...props}
-              bind:value={$formData.watt}
-            />
-          </div>
-        {/snippet}
-      </FormControl>
-      <FormDescription class="text-xs">
-        Isi sesuai daya listrik perangkat. Biasanya tertera di label atau
-        spesifikasi.
-      </FormDescription>
-      <FormFieldErrors />
-    </FormField>
-
-    {#if !sessionBased}
-      <FormField {form} name="dailyHours" class="grid gap-1">
-        <FormControl>
+  <div class="grid gap-4 px-4">
+    <Field {form} name="name">
+      <div class="grid gap-y-2">
+        <Control>
           {#snippet children({props})}
-            <div class="grid gap-2">
-              <FormLabel>Durasi (jam/hari)</FormLabel>
-              <Input
-                class="h-10"
+            <div class="grid gap-1">
+              <Label.Root class="text-sm">Nama Perangkat</Label.Root>
+              <input
+                class="input"
+                type="text"
+                {...props}
+                bind:value={$formData.name}
+              >
+            </div>
+          {/snippet}
+        </Control>
+        {#if !$errors.name}
+          <Description class="text-xs">
+            Beri nama perangkat agar mudah dikenali
+          </Description>
+        {:else}
+          <FieldErrors class="text-destructive text-xs" />
+        {/if}
+      </div>
+    </Field>
+
+    <Field {form} name="watt">
+      <div class="grid gap-y-2">
+        <Control>
+          {#snippet children({props})}
+            <div class="grid gap-1">
+              <Label.Root class="text-sm">Daya (Watt)</Label.Root>
+              <input
+                class="input"
                 type="number"
                 inputmode="decimal"
                 {...props}
-                bind:value={$formData.dailyHours}
-              />
+                bind:value={$formData.watt}
+              >
             </div>
           {/snippet}
-        </FormControl>
-        <FormDescription class="text-xs">
-          Berapa lama perangkat biasanya menyala setiap hari.
-        </FormDescription>
-        <FormFieldErrors />
-      </FormField>
+        </Control>
+        {#if !$errors.name}
+          <Description class="text-xs">
+            Isi sesuai daya listrik perangkat.
+          </Description>
+        {:else}
+          <FieldErrors class="text-destructive text-xs" />
+        {/if}
+      </div>
+    </Field>
+
+    {#if !sessionBased}
+      <Field {form} name="dailyHours">
+        <div class="grid gap-y-2">
+          <Control>
+            {#snippet children({props})}
+              <div class="grid gap-1">
+                <Label.Root class="text-sm">Durasi (jam/hari)</Label.Root>
+                <input
+                  class="input"
+                  type="number"
+                  inputmode="decimal"
+                  {...props}
+                  bind:value={$formData.dailyHours}
+                >
+              </div>
+            {/snippet}
+          </Control>
+          {#if !$errors.name}
+            <Description class="text-xs">
+              Berapa lama perangkat biasanya menyala setiap hari.
+            </Description>
+          {:else}
+            <FieldErrors class="text-destructive text-xs" />
+          {/if}
+        </div>
+      </Field>
     {/if}
 
-    <FormField {form} name="sessionBased" class="grid gap-1">
-      <FormControl>
-        <div class="flex gap-2">
-          <Checkbox
+    <Fieldset {form} name="sessionBased">
+      <Control>
+        <div class="flex gap-2 items-center">
+          <input
+            class="border-secondary size-6 items-center rounded-lg border transition-all duration-150"
+            type="checkbox"
             id="sessionBased"
             bind:checked={sessionBased}
-            onCheckedChange={handleCheck}
-          />
-          <FormLabel> Perangkat digunakan saat diperlukan </FormLabel>
+          >
+          <Label.Root class="text-sm" id="session-label" for="sessionBased">
+            Perangkat digunakan saat diperlukan
+          </Label.Root>
         </div>
-      </FormControl>
-      <FormFieldErrors />
-    </FormField>
+      </Control>
+      <FieldErrors />
+    </Fieldset>
   </div>
 
   <div class="grid gap-2 px-4">
-    <FormButton class="flex-1">Simpan</FormButton>
-    <DrawerClose class="flex-1">Batalkan</DrawerClose>
+    <FormButton class="flex-1 font-bold btn-primary h-10">Simpan</FormButton>
+    <DrawerClose class="flex-1 font-normal btn-secondary h-10"
+      >Batalkan</DrawerClose
+    >
   </div>
 </form>
