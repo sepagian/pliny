@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { Pagination } from "bits-ui";
+  import { ChevronLeft, ChevronRight } from "@lucide/svelte";
   import EntryItem from "$lib/components/features/log/entry-item.svelte";
   import { applianceStore } from "$lib/stores/appliance.svelte";
   import { useCombinedEntries } from "$lib/stores/logs.svelte";
@@ -8,6 +10,9 @@
 
   const appliances = $derived(applianceStore.appliances);
   const entries = $derived(useCombinedEntries());
+  const perPage: number = 10;
+
+  let currentPage: number = $state(1);
 
   const alwaysOnKwhPerDay = $derived(
     appliances
@@ -22,19 +27,42 @@
   const enrichedLogs = $derived(
     computeEnrichedEntries(entries, alwaysOnKwhPerDay)
   );
+
+  const paginatedLogs = $derived(
+    enrichedLogs.slice((currentPage - 1) * perPage, currentPage * perPage)
+  );
 </script>
 
-<section class="grid gap-2 mb-10">
-  <div>
-    <h2 class="uppercase text-sm">Log Aktivitas</h2>
-    <p class="text-sm text-muted-foreground">
-      Pantau semua aktivitas listrik, termasuk top up, meter, dan pemakaian.
-    </p>
+<section class="grid gap-2 pb-20">
+  <div class="flex justify-between items-center">
+    <div>
+      <h2 class="uppercase text-sm">Log Aktivitas</h2>
+      <p class="text-sm text-muted-foreground">
+        Pantau semua aktivitas listrik, termasuk top up, meter, dan pemakaian.
+      </p>
+    </div>
+    <Pagination.Root
+      class=""
+      bind:page={currentPage}
+      count={enrichedLogs.length}
+      {perPage}
+    >
+      <div class="flex items-center justify-center gap-2">
+        <Pagination.PrevButton
+          class="bg-secondary rounded-md p-2 disabled:text-muted-foreground"
+          ><ChevronLeft /></Pagination.PrevButton
+        >
+        <Pagination.NextButton
+          class="bg-secondary rounded-md p-2 disabled:text-muted-foreground"
+          ><ChevronRight /></Pagination.NextButton
+        >
+      </div>
+    </Pagination.Root>
   </div>
 
-  {#if enrichedLogs.length}
+  {#if paginatedLogs.length}
     <div class="flex flex-col gap-2">
-      {#each enrichedLogs as entry (entry.id)}
+      {#each paginatedLogs as entry (entry.id)}
         <EntryItem {entry} />
       {/each}
     </div>

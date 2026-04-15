@@ -3,12 +3,7 @@
   import LogMeterForm from "$lib/components/features/entry/entry-meter-form.svelte";
   import SessionForm from "$lib/components/features/entry/entry-session-form.svelte";
   import TopUpForm from "$lib/components/features/entry/entry-topup-form.svelte";
-  import {
-    UnderlineTabs,
-    UnderlineTabsContent,
-    UnderlineTabsList,
-    UnderlineTabsTrigger,
-  } from "$lib/components/ui/underline-tabs";
+  import { Tabs } from "bits-ui";
 
   interface Tab {
     component: Component;
@@ -45,18 +40,18 @@
   ];
 </script>
 
-<UnderlineTabs value="top-up" class="grid gap-4">
-  <div class="">
-    <UnderlineTabsList class="grid grid-cols-3 text-center">
+<Tabs.Root value="top-up" class="grid gap-4">
+  <div class="mx-4">
+    <Tabs.List class="tabs-list">
       {#each tabs as { value, label }}
-        <UnderlineTabsTrigger {value}>{label}</UnderlineTabsTrigger>
+        <Tabs.Trigger {value} class="tabs-trigger">{label}</Tabs.Trigger>
       {/each}
-    </UnderlineTabsList>
+    </Tabs.List>
   </div>
   {#each tabs as { value, component }}
-    <UnderlineTabsContent {value}>
+    <Tabs.Content {value} class="w-full">
       {@const Component = component}
       <div class="mb-6"><Component {onSuccess} /></div>
-    </UnderlineTabsContent>
+    </Tabs.Content>
   {/each}
-</UnderlineTabs>
+</Tabs.Root>

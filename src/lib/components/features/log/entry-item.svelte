@@ -7,23 +7,11 @@
   import SessionForm from "$lib/components/features/entry/entry-session-form.svelte";
   import TopUpForm from "$lib/components/features/entry/entry-topup-form.svelte";
   import DrawerWrapper from "$lib/components/features/layout/layout-drawer.svelte";
-  import { Button } from "$lib/components/ui/button";
-  import {
-    ConfirmDeleteDialog,
+  import { Button } from "bits-ui";
+  import TooltipWrapper from "$lib/components/features/layout/layout-tooltip.svelte";
+  import ConfirmDeleteDialog, {
     confirmDelete,
-  } from "$lib/components/ui/confirm-delete-dialog";
-  import {
-    Item,
-    ItemActions,
-    ItemContent,
-    ItemDescription,
-    ItemTitle,
-  } from "$lib/components/ui/item";
-  import {
-    Tooltip,
-    TooltipContent,
-    TooltipTrigger,
-  } from "$lib/components/ui/tooltip";
+  } from "$lib/components/features/layout/layout-confirm-delete.svelte";
   import { applianceStore } from "$lib/stores/appliance.svelte";
   import type { EnrichedEntry } from "$lib/types";
   import { toKwh } from "$lib/utils/calc";
@@ -48,11 +36,17 @@
   const color = $derived(colors[entry.type]);
 
   const formConfig = $derived({
-    topup: { title: "Edit Top-Up", description: "Edit entri top-up" },
-    meter: { title: "Edit Meter", description: "Edit pembacaan meter" },
+    topup: {
+      title: "Edit Top-Up",
+      description: "Perbarui data pengisian token",
+    },
+    meter: {
+      title: "Edit Catatan Meteran",
+      description: "Perbarui angka saldo meteran",
+    },
     session: {
-      title: "Edit Pemakaian",
-      description: "Edit pemakaian perangkat",
+      title: "Edit Sesi Pemakaian",
+      description: "Perbarui durasi sesi yang sudah dicatat",
     },
   });
 
@@ -115,13 +109,13 @@
   const label = $derived(() => {
     switch (entry.type) {
       case "topup":
-        return "Credit top-up";
+        return "Top-up Token";
       case "meter":
-        return "Meter reading";
+        return "Catat Meter";
       case "session":
         return entry.appliance;
       case "daily":
-        return "Daily usage";
+        return "Penggunaan harian";
       default:
         return "";
     }
@@ -151,48 +145,50 @@
 </script>
 
 <div
-  class="flex gap-4 items-center bg-muted/50 rounded-xl p-4 hover:bg-muted/60"
+  class="flex gap-4 items-center bg-secondary/80 rounded-xl p-4 hover:bg-secondary/60"
 >
   <div class="dot" style="background: {color};"></div>
-  <ItemContent class="flex flex-row justify-between">
+  <div class="flex flex-row justify-between w-full">
     <div class="flex flex-col gap-1">
-      <ItemTitle class="flex">
+      <h2 class="flex items-center gap-2 text-sm">
         {label()}
         {#if subtitle()}
-          <ItemDescription class="text-xs"> {subtitle()}</ItemDescription>
+          <p class="text-xs text-muted-foreground">{subtitle()}</p>
         {/if}
-      </ItemTitle>
-      <ItemDescription class="text-xs">
+      </h2>
+      <p class="text-xs text-muted-foreground">
         {fmtDate(new Date(entry.timestamp))}
-      </ItemDescription>
+      </p>
     </div>
-    <div class="flex flex-col gap-1">
-      <ItemDescription class="text-right {amountColor()} font-medium">
+    <div class="flex flex-col gap-1 ">
+      <p class="text-right {amountColor()} font-medium text-sm">
         {displayValue()}
         {unit()}
-      </ItemDescription>
-      <ItemDescription class="text-xs text-right text-muted-foreground">
+      </p>
+      <p class="text-xs text-right text-muted-foreground">
         Sisa: {entry.computedBal} kWh
-      </ItemDescription>
+      </p>
     </div>
-  </ItemContent>
-  <ItemActions>
-    <ConfirmDeleteDialog />
-    {#if isEditable}
+  </div>
+  {#if isEditable}
+    <div class="flex gap-1">
+      <ConfirmDeleteDialog />
       <DrawerWrapper
         bind:open
         title={formConfig[entry.type]?.title ?? ""}
         description={formConfig[entry.type ]?.description ?? ""}
       >
         {#snippet trigger()}
-          <Tooltip>
-            <TooltipTrigger>
-              <Button variant="secondary" size="sm">
-                <Pencil size="12" />
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent>Edit</TooltipContent>
-          </Tooltip>
+          <TooltipWrapper>
+            {#snippet trigger()}
+              <Button.Root
+                class="btn-secondary bg-stone-700 text-stone-100 hover:(bg-stone-800 text-stone-100) p-3"
+              >
+                <Pencil size="16" />
+              </Button.Root>
+            {/snippet}
+            Edit
+          </TooltipWrapper>
         {/snippet}
         {#snippet content()}
           <div class="mb-6">
@@ -206,16 +202,21 @@
           </div>
         {/snippet}
       </DrawerWrapper>
-    {/if}
-    <Tooltip>
-      <TooltipTrigger>
-        <Button variant="secondary" onclick={handleDelete} size="sm">
-          <Trash size="12" />
-        </Button>
-      </TooltipTrigger>
-      <TooltipContent>Delete</TooltipContent>
-    </Tooltip>
-  </ItemActions>
+      <TooltipWrapper>
+        {#snippet trigger()}
+          {#if entry.type !== "daily"}
+            <Button.Root
+              class="btn-secondary bg-red-700 text-red-100 hover:(bg-red-800 text-red-100) p-3"
+              onclick={handleDelete}
+            >
+              <Trash size="16" />
+            </Button.Root>
+          {/if}
+        {/snippet}
+        Delete
+      </TooltipWrapper>
+    </div>
+  {/if}
 </div>
 
 <style>
