@@ -12,7 +12,8 @@
     appliances
       .filter((a: Appliance) => !a.sessionBased)
       .reduce(
-        (sum: number, a: Appliance) => sum + toKwh(a.watt, a.dailyHours),
+        (sum: number, a: Appliance) =>
+          sum + toKwh(a.watt, a.dailyHours as number),
         0
       )
   );
@@ -25,6 +26,6 @@
 <div class="grid col-span-5 content-center gap-0">
   <h2 class="text-4xl font-bold tabular-nums">{currentBalance ?? "--"} Kwh</h2>
   <p class="text-sm text-muted-foreground">
-    estimated remaining balance from usage
+    estimasi sisa token setelah pemakaian
   </p>
 </div>

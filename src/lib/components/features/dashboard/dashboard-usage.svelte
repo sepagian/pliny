@@ -33,7 +33,6 @@
         }, 0) / sessionEntries.length
       : 0
   );
-
   const dailyTotal = $derived(alwaysOnKwh);
 
   const currentBalance = $derived(computeCurrentBalance(entries, alwaysOnKwh));
@@ -45,23 +44,33 @@
   );
 
   const usage = $derived([
-    { description: "Daily Usage", title: alwaysOnKwh, footer: "kWh/day" },
     {
-      description: "Sessions Avg",
-      title: Math.round(sessionAvgKwh * 10) / 10,
-      footer: "kWh/day",
+      description: "pemakaian tetap",
+      title: alwaysOnKwh.toFixed(2),
+      footer: "kWh/hari",
     },
-    { description: "Days left", title: daysLeft ?? "-", footer: "est." },
+    {
+      description: "pemakaian berkala",
+      title: sessionEntries.length > 0 ? sessionAvgKwh.toFixed(2) : "-",
+      footer: sessionEntries.length > 0 ? "kWh/sesi" : "belum ada sesi",
+    },
+    {
+      description: "estimasi hari",
+      title: daysLeft ?? "-",
+      footer: daysLeft == null ? "tambahkan kredit" : "hari",
+    },
   ]);
 </script>
 
-<section class="grid grid-cols-3 gap-x-3">
+<section class="grid sm:grid-cols-3 grid-cols-1 gap-2">
   {#each usage as { description, title, footer }}
     <div class="card-secondary">
-      <h2 class="uppercase text-xs truncate text-accent-foreground">
+      <h2 class="capitalize text-sm truncate text-accent-foreground">
         {description}
       </h2>
-      <h1 class="text-4xl tabular-nums font-semibold">{title}</h1>
+      <h1 class="text-4xl tabular-nums font-semibold tracking-tighter">
+        {title}
+      </h1>
       <p class="text-xs text-muted-foreground">{footer}</p>
     </div>
   {/each}
