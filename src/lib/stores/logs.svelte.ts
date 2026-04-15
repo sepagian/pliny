@@ -1,6 +1,11 @@
 import { liveQuery } from "dexie";
 import { db } from "$lib/db/db";
-import type { DailyEntry, MeterEntry, SessionEntry, TopupEntry } from "$lib/types";
+import type {
+  DailyEntry,
+  MeterEntry,
+  SessionEntry,
+  TopupEntry,
+} from "$lib/types";
 
 let meterEntries = $state<MeterEntry[]>([]);
 let sessionEntries = $state<SessionEntry[]>([]);
@@ -8,8 +13,13 @@ let topupEntries = $state<TopupEntry[]>([]);
 let dailyEntries = $state<DailyEntry[]>([]);
 
 export function useCombinedEntries() {
-  return [...meterEntries, ...sessionEntries, ...topupEntries, ...dailyEntries].sort(
-    (a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime(),
+  return [
+    ...meterEntries,
+    ...sessionEntries,
+    ...topupEntries,
+    ...dailyEntries,
+  ].sort(
+    (a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
   );
 }
 
