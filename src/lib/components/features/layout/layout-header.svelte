@@ -10,7 +10,6 @@
     <div class="hidden dark:inline size-w-20 size-h-auto">
       {@html LogoLight}
     </div>
-    <p class="font-sans text-sm">Track prepaid credits & appliance usage</p>
   </div>
   <ThemeSwitcher />
 </section>

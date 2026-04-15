@@ -21,11 +21,11 @@
     <Drawer.Content
       class="fixed bottom-0 left-0 right-0 mt-24 flex h-fit flex-col rounded-t-xl bg-background"
     >
-      <div class="mx-auto w-full max-w-sm pt-4 flex flex-col gap-2">
+      <div class="mx-auto w-full max-w-sm pt-4 flex flex-col gap-6 px-0">
         <div
-          class="mx-auto mb-4 h-1.5 w-12 flex-shrink-0 rounded-full bg-zinc-300"
+          class="mx-auto mb-4 h-1.5 w-12 shrink-0 rounded-full bg-secondary"
         ></div>
-        <div class="flex flex-col gap-0 px-4">
+        <div class="flex flex-col px-4">
           <Drawer.Title class="font-medium">{title}</Drawer.Title>
           <Drawer.Description class="text-sm text-muted-foreground"
             >{description}</Drawer.Description

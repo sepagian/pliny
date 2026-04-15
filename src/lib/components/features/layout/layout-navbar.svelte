@@ -1,29 +1,28 @@
 <script lang="ts">
   import { House, type Icon, LampCeiling } from "@lucide/svelte";
-  import { Button } from "$lib/components/ui/button";
-  import { ButtonGroup } from "$lib/components/ui/button-group";
+  import { Button } from "bits-ui";
 
   interface Link {
     href: string;
     icon: typeof Icon;
-    title: string;
+    title?: string;
   }
   const links: Link[] = [
-    { href: "/", title: "Home", icon: House },
-    { href: "/appliance", title: "Appliance", icon: LampCeiling },
+    { href: "/", icon: House },
+    { href: "/peralatan", title: "peralatan", icon: LampCeiling },
   ];
 </script>
 
 <nav>
-  <ButtonGroup class="fixed bottom-8 w-full gap-x-2">
+  <div class="flex fixed bottom-6 w-full gap-x-2">
     {#each links as { href, title, icon }}
       <a {href}>
-        <Button class="w-full font-bold" size="lg">
+        <Button.Root class="font-bold btn-primary h-10 w-fit px-4 capitalize">
           {@const Component = icon}
           <Component size="16" />
           {title}
-        </Button>
+        </Button.Root>
       </a>
     {/each}
-  </ButtonGroup>
+  </div>
 </nav>
