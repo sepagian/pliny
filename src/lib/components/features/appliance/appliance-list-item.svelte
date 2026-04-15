@@ -5,10 +5,9 @@
   import DrawerWrapper from "$lib/components/features/layout/layout-drawer.svelte";
   import TooltipWrapper from "$lib/components/features/layout/layout-tooltip.svelte";
   import { Button } from "bits-ui";
-  import {
-    ConfirmDeleteDialog,
+  import ConfirmDeleteDialog, {
     confirmDelete,
-  } from "$lib/components/features/layout";
+  } from "$lib/components/features/layout/layout-confirm-delete.svelte";
   import type { Appliance } from "$lib/types";
 
   let { appliance }: { appliance: Appliance } = $props();
