@@ -115,17 +115,23 @@
                   {selectedAppliance?.label ?? "Pilih perangkat"}
                 </Select.Trigger>
                 <Select.Content sideOffset={6} class="select-content">
-                  {#each applianceList as item}
-                    <Select.Item value={item.value} class="select-item">
-                      <div class="flex justify-between gap-2 items-center">
-                        <span>{item.label}</span>
-                        <span class="text-sm text-gray-500">
-                          {item.watt}
-                          Watt
-                        </span>
-                      </div>
+                  {#if applianceList.length}
+                    {#each applianceList as item}
+                      <Select.Item value={item.value} class="select-item">
+                        <div class="flex justify-between gap-2 items-center">
+                          <span>{item.label}</span>
+                          <span class="text-sm text-gray-500">
+                            {item.watt}
+                            Watt
+                          </span>
+                        </div>
+                      </Select.Item>
+                    {/each}
+                  {:else}
+                    <Select.Item value="no-item" class="select-item">
+                      <span>Tidak ada perangkat</span>
                     </Select.Item>
-                  {/each}
+                  {/if}
                 </Select.Content>
               </Select.Root>
             </div>
