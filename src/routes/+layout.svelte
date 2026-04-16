@@ -14,7 +14,6 @@
     initSessionStore,
     initTopupStore,
   } from "$lib/stores/logs.svelte";
-  import { webApplicationSchema } from "$lib/utils/seo";
 
   let { children } = $props();
 
@@ -53,12 +52,13 @@
   <meta name="twitter:image" content="https://pliny.sepagian.xyz/og-image.png">
 
   <meta name="theme-color" content="#ffffff">
-  {@html `<script type="application/ld+json">${JSON.stringify(webApplicationSchema)}</script>`}
 </svelte:head>
 
 <ModeWatcher />
 <Tooltip.Provider>
-  <main class="max-w-2xl mx-auto h-screen p-4 flex flex-col gap-y-4">
+  <main
+    class="max-w-2xl mx-auto h-screen p-4 grid grid-flow-row auto-rows-max gap-y-4"
+  >
     <Header />
     {@render children()}
     <NavBar />
