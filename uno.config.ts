@@ -112,12 +112,11 @@ html, body {
     "alert-overlay": "fixed inset-0 z-50 bg-black/80",
     "alert-content":
       "rounded-xl grid gap-y-4 bg-background outline-hidden fixed left-[50%] top-[50%] z-50 grid w-full max-w-[calc(100%-2rem)] translate-x-[-50%] translate-y-[-50%] gap-4 border border-secondary p-6 sm:max-w-lg md:w-full",
-    input:
-      "h-10 border rounded-lg border-input ring-offset-background bg-secondary/30 px-2",
+    input: "h-10 border rounded-lg border-input ring-offset-background bg-secondary/30 px-2",
     "select-content":
-      "focus-override border-muted bg-background shadow-popover outline-hidden z-50 h-fit max-h-[var(--bits-select-content-available-height)] w-[var(--bits-select-anchor-width)] min-w-[var(--bits-select-anchor-width)] select-none rounded-xl border px-1.5 py-2",
+      " border-muted bg-background shadow-popover outline-hidden z-50 h-fit max-h-[var(--bits-select-content-available-height)] w-[var(--bits-select-anchor-width)] min-w-[var(--bits-select-anchor-width)] select-none rounded-xl border px-1.5 py-2",
     "select-item":
-      "rounded-lg data-[highlighted]:bg-secondary outline-hidden data-disabled:opacity-50 flex w-full select-none items-center px-4 text-sm capitalize h-10",
+      "rounded-lg data-[highlighted]:bg-secondary outline-hidden flex w-full select-none items-center px-4 text-sm capitalize h-10",
   },
   safelist: [
     "p-*",
@@ -153,10 +152,6 @@ html, body {
     "tracking-*",
     "shadow-*",
     "opacity-*",
-    "flex",
-    "flex-col",
-    "flex-row",
-    "grid",
     "inline-flex",
     "grid-cols-*",
     "col-span-*",
@@ -209,9 +204,5 @@ html, body {
       },
     }),
   ],
-  transformers: [
-    transformerDirectives(),
-    transformerVariantGroup(),
-    transformerCompileClass(),
-  ],
+  transformers: [transformerDirectives(), transformerVariantGroup(), transformerCompileClass()],
 });

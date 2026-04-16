@@ -3,8 +3,6 @@ import adapter from "@sveltejs/adapter-cloudflare";
 import { vitePreprocess } from "@sveltejs/vite-plugin-svelte";
 import UnoCSS from "@unocss/svelte-scoped/preprocess";
 
-const prod = process.env.NODE_ENV !== "development";
-
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
   compilerOptions: {
@@ -18,13 +16,23 @@ const config = {
   },
   kit: {
     adapter: adapter({
-      routes: { include: ["/*"], exclude: ["<all>", "/sitemap.xml"] },
+      routes: {
+        include: ["/*"],
+        exclude: [
+          "<all>",
+          "/sitemap.xml",
+          "<build>",
+          "<prerendered>",
+          "/sw.js",
+          "/manifest.webmanifest",
+          "/workbox-*.js",
+        ],
+      },
     }),
   },
   preprocess: [
     vitePreprocess(),
     UnoCSS({
-      combine: prod,
       configOrPath: "./uno.config.ts",
       exclude: ["node_modules/*"],
     }),
