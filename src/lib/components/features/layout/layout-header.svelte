@@ -4,12 +4,8 @@
   import ThemeSwitcher from "$lib/components/features/setting/setting-theme-toggle.svelte";
 </script>
 
-<section class="flex flex-row justify-between items-center">
-  <div class="grid gap-y-0">
-    <div class="dark:hidden inline size-w-20 size-h-auto">{@html Logo}</div>
-    <div class="hidden dark:inline size-w-20 size-h-auto">
-      {@html LogoLight}
-    </div>
-  </div>
+<section class="flex justify-between items-center">
+  <div class="dark:hidden inline size-w-20 size-h-auto">{@html Logo}</div>
+  <div class="hidden dark:inline size-w-20 size-h-auto">{@html LogoLight}</div>
   <ThemeSwitcher />
 </section>

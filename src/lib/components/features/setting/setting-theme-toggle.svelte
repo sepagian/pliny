@@ -4,7 +4,7 @@
   import { toggleMode } from "mode-watcher";
 </script>
 
-<Button.Root class="btn-secondary p-3" onclick={toggleMode}>
+<Button.Root class="btn-secondary p-3 w-fit" onclick={toggleMode}>
   <SunMoon size="16" />
   <span class="sr-only">Toggle theme</span>
 </Button.Root>

@@ -83,7 +83,7 @@
                 type="date"
                 {...props}
                 bind:value={$formData.date}
-                class="input"
+                class="input w-full"
               >
             </div>
           {/snippet}
