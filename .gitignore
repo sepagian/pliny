@@ -8,6 +8,7 @@ v6.html
 .wrangler
 /.svelte-kit
 /build
+/dev-dist
 
 # OS
 .DS_Store
@@ -30,4 +31,5 @@ vite.config.ts.timestamp-*
 
 .zed
 .vscode
+.opencode
 PRODUCT.md

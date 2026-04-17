@@ -99,7 +99,7 @@ html, body {
     "card-secondary":
       "p-4 rounded-lg bg-secondary grid gap-1 hover:bg-secondary/90 text-secondary-foreground",
     "btn-primary":
-      "bg-primary text-primary-foreground hover:bg-primary/95 inline-flex items-center justify-center text-[15px] font-semibold active:scale-[0.98] active:transition-all rounded-lg gap-2",
+      "bg-primary text-primary-foreground hover:bg-primary/95 inline-flex items-center justify-center text-[15px] font-semibold rounded-lg gap-2",
     "btn-secondary":
       "bg-secondary text-secondary-foreground hover:bg-secondary/95 inline-flex items-center justify-center text-[15px] font-semibold active:scale-[0.98] active:transition-all rounded-lg gap-2",
     "tooltip-content": "origin-(--bits-tooltip-content-transform-origin)",
