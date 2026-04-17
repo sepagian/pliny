@@ -1,10 +1,6 @@
 import { superValidate } from "sveltekit-superforms";
 import { zod4 } from "sveltekit-superforms/adapters";
-import {
-  logMeterSchema,
-  logSessionSchema,
-  logTopUpSchema,
-} from "$lib/utils/schema";
+import { logMeterSchema, logSessionSchema, logTopUpSchema } from "$lib/utils/schema";
 
 const today = new Date().toISOString().split("T")[0];
 

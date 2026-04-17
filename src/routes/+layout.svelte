@@ -5,6 +5,7 @@
   import favicon from "$lib/assets/favicon.svg";
   import "@unocss/reset/tailwind.css";
   import "uno.css";
+  import { pwaInfo } from "virtual:pwa-info";
   import Header from "$lib/components/features/layout/layout-header.svelte";
   import NavBar from "$lib/components/features/layout/layout-navbar.svelte";
   import { initApplianceStore } from "$lib/stores/appliance.svelte";
@@ -17,12 +18,25 @@
 
   let { children } = $props();
 
-  onMount(() => {
+  onMount(async () => {
     initApplianceStore();
     initMeterStore();
     initSessionStore();
     initTopupStore();
     initDailyStore();
+
+    if (pwaInfo) {
+      const { registerSW } = await import("virtual:pwa-register");
+      registerSW({
+        immediate: true,
+        onRegistered(r) {
+          console.log(`SW Registered: ${r}`);
+        },
+        onRegisterError(error) {
+          console.log("SW registration error", error);
+        },
+      });
+    }
   });
 </script>
 
@@ -52,6 +66,7 @@
   <meta name="twitter:image" content="https://pliny.sepagian.xyz/og-image.png">
 
   <meta name="theme-color" content="#ffffff">
+  {@html pwaInfo ? pwaInfo.webManifest.linkTag : ""}
 </svelte:head>
 
 <ModeWatcher />
