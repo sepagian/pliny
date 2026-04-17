@@ -1,12 +1,14 @@
 <script lang="ts">
-  import { Pagination } from "bits-ui";
-  import { ChevronLeft, ChevronRight } from "@lucide/svelte";
+  import { ChevronDown, ChevronLeft, ChevronRight } from "@lucide/svelte";
+  import { Accordion, Pagination } from "bits-ui";
   import EntryItem from "$lib/components/features/log/entry-item.svelte";
   import { applianceStore } from "$lib/stores/appliance.svelte";
   import { useCombinedEntries } from "$lib/stores/logs.svelte";
   import type { Appliance } from "$lib/types";
   import { toKwh } from "$lib/utils/calc";
-  import { computeEnrichedEntries } from "$lib/utils/helper";
+  import { computeEnrichedEntries, getDateLabel } from "$lib/utils/helper";
+  import { slide } from "svelte/transition";
+  import { circInOut } from "svelte/easing";
 
   const appliances = $derived(applianceStore.appliances);
   const entries = $derived(useCombinedEntries());
@@ -30,6 +32,36 @@
 
   const paginatedLogs = $derived(
     enrichedLogs.slice((currentPage - 1) * perPage, currentPage * perPage)
+  );
+
+  const groupsByDate = $derived(() => {
+    const grouped = new Map<string, typeof paginatedLogs>();
+    for (const entry of paginatedLogs) {
+      const label = getDateLabel(new Date(entry.timestamp));
+      if (!grouped.has(label)) {
+        grouped.set(label, []);
+      }
+      grouped.get(label)?.push(entry);
+    }
+    return grouped;
+  });
+
+  const sortedLabels = $derived(
+    Array.from(groupsByDate().keys()).sort((a, b) => {
+      if (a === "Hari ini") {
+        return -1;
+      }
+      if (b === "Hari ini") {
+        return 1;
+      }
+      if (a === "Kemarin") {
+        return -1;
+      }
+      if (b === "Kemarin") {
+        return 1;
+      }
+      return 0;
+    })
   );
 </script>
 
@@ -61,16 +93,40 @@
   </div>
 
   {#if paginatedLogs.length}
-    <div class="flex flex-col gap-2">
-      {#each paginatedLogs as entry (entry.id)}
-        <EntryItem {entry} />
+    <Accordion.Root type="single" class="flex flex-col gap-2">
+      {#each sortedLabels as label (label)}
+        <Accordion.Item
+          value={label}
+          class="bg-secondary/50 rounded-xl overflow-hidden cursor-pointer"
+        >
+          <Accordion.Header>
+            <Accordion.Trigger
+              class="flex items-center justify-between w-full p-4"
+            >
+              <span class="text-sm font-medium">
+                {label}
+                ({groupsByDate().get(label)?.length ?? 0}
+                entri)
+              </span>
+              <ChevronDown size="16" />
+            </Accordion.Trigger>
+          </Accordion.Header>
+          <Accordion.Content class="px-4 pb-4" forceMount={true}>
+            {#snippet child({props, open})}
+              {#each groupsByDate().get(label) ?? [] as entry (entry.id)}
+                {#if open}
+                  <div
+                    {...props}
+                    transition:slide={{ duration: 300, easing: circInOut }}
+                  >
+                    <EntryItem {entry} />
+                  </div>
+                {/if}
+              {/each}
+            {/snippet}
+          </Accordion.Content>
+        </Accordion.Item>
       {/each}
-    </div>
-  {:else}
-    <div class="bg-secondary rounded-lg">
-      <p class="text-sm text-secondary-foreground text-center py-4">
-        Belum ada entri.
-      </p>
-    </div>
+    </Accordion.Root>
   {/if}
 </section>
