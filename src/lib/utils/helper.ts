@@ -23,10 +23,7 @@ function generateDateRange(startDate: string): string[] {
   return dates;
 }
 
-export function generateDailyEntries(
-  dates: string[],
-  dailyKwh: number
-): Entry[] {
+export function generateDailyEntries(dates: string[], dailyKwh: number): Entry[] {
   return dates.map((date) => ({
     id: `daily-${date}`,
     date,
@@ -52,7 +49,7 @@ function updateBalance(entry: Entry, currentBal: number | null): number | null {
 
 export function computeEnrichedEntries(
   entries: Entry[],
-  alwaysOnKwhPerDay: number
+  alwaysOnKwhPerDay: number,
 ): EnrichedEntry[] {
   const firstEntryDate = entries
     .map((e) => e.date)
@@ -67,7 +64,7 @@ export function computeEnrichedEntries(
       : [];
 
   const allEntries = [...entries, ...dailyEntries].sort((a, b) =>
-    a.timestamp.localeCompare(b.timestamp)
+    a.timestamp.localeCompare(b.timestamp),
   );
 
   const enriched: EnrichedEntry[] = [];
@@ -85,15 +82,29 @@ export function computeEnrichedEntries(
     });
   }
 
-  return enriched.sort(
-    (a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
-  );
+  return enriched.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
 }
 
-export function computeCurrentBalance(
-  entries: Entry[],
-  alwaysOnKwhPerDay: number
-): number | null {
+export function computeCurrentBalance(entries: Entry[], alwaysOnKwhPerDay: number): number | null {
   const enriched = computeEnrichedEntries(entries, alwaysOnKwhPerDay);
   return enriched.length > 0 ? enriched[0].computedBal : null;
+}
+
+export function getDateLabel(date: Date): string {
+  const today = new Date();
+  const entryDate = new Date(date);
+
+  const isSameDay = (a: Date, b: Date) => a.toDateString() === b.toDateString();
+
+  if (isSameDay(entryDate, today)) {
+    return "Hari ini";
+  }
+  if (isSameDay(entryDate, new Date(today.getTime() - 86_400_000))) {
+    return "Kemarin";
+  }
+
+  return entryDate.toLocaleDateString("id-ID", {
+    day: "numeric",
+    month: "short",
+  });
 }

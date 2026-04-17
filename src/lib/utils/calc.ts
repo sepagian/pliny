@@ -12,9 +12,6 @@ export function calcMonthlyKwh(appliance: Appliance): number {
   return calcDailyKwh(appliance) * 30;
 }
 
-export function calcMonthlyCost(
-  appliance: Appliance,
-  ratePerKwh: number
-): number {
+export function calcMonthlyCost(appliance: Appliance, ratePerKwh: number): number {
   return calcMonthlyKwh(appliance) * ratePerKwh;
 }
