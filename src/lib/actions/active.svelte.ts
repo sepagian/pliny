@@ -32,10 +32,7 @@ export type Options = {
  * <a href="/" use:active>Route</a>
  * ```
  */
-export function active(
-  node: HTMLAnchorElement,
-  opts: Omit<Options, "url"> = {}
-) {
+export function active(node: HTMLAnchorElement, opts: Omit<Options, "url"> = {}) {
   checkIsActive(node.href, { ...opts, url: page.url }).toString();
 
   $effect(() => {
@@ -45,7 +42,7 @@ export function active(
     untrack(() => {
       node.setAttribute(
         "data-active",
-        checkIsActive(node.href, { ...opts, url: page.url }).toString()
+        checkIsActive(node.href, { ...opts, url: page.url }).toString(),
       );
     });
   });
@@ -69,7 +66,7 @@ export function attachActive(opts: Omit<Options, "url"> = {}) {
 
 export const checkIsActive = (
   nodeHref: string,
-  { activeForSubdirectories, url, isHash, isSearch }: Options
+  { activeForSubdirectories, url, isHash, isSearch }: Options,
 ): boolean => {
   let href: string = new SvelteURL(nodeHref).pathname;
 
@@ -98,8 +95,7 @@ export const checkIsActive = (
     url.pathname.startsWith(href ?? "");
 
   const isHashRoute: boolean =
-    isHash == true &&
-    (url.hash == href || ((href == "#" || href == "#/") && url.hash == ""));
+    isHash == true && (url.hash == href || ((href == "#" || href == "#/") && url.hash == ""));
 
   const isSearchRoute: boolean =
     isSearch === true &&
